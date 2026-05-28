@@ -4,7 +4,7 @@ import { SectionDivider } from './Icons';
 
 const WEEKDAYS = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
 
-function buildCalendar(year, month, weddingDay) {
+function buildCalendar(year, month, weddingDays) {
   const firstDay = new Date(year, month - 1, 1);
   const daysInMonth = new Date(year, month, 0).getDate();
   const startOffset = (firstDay.getDay() + 6) % 7;
@@ -13,14 +13,14 @@ function buildCalendar(year, month, weddingDay) {
   for (let i = 0; i < startOffset; i += 1) cells.push(null);
   for (let day = 1; day <= daysInMonth; day += 1) cells.push(day);
 
-  return { cells, weddingDay };
+  return { cells, weddingDays };
 }
 
 export default function Welcome() {
-  const { cells, weddingDay } = buildCalendar(
+  const { cells, weddingDays } = buildCalendar(
     wedding.calendar.year,
     7,
-    wedding.calendar.weddingDay,
+    wedding.calendar.weddingDays,
   );
 
   return (
@@ -51,9 +51,9 @@ export default function Welcome() {
             {cells.map((day, index) => (
               <span
                 key={day ?? `empty-${index}`}
-                className={`calendar__day ${day === weddingDay ? 'calendar__day--wedding' : ''}`}
+                className={`calendar__day ${day && weddingDays.includes(day) ? 'calendar__day--wedding' : ''}`}
               >
-                {day === weddingDay && (
+                {day && weddingDays.includes(day) && (
                   <svg className="calendar__heart" viewBox="0 0 24 24" aria-hidden="true">
                     <path
                       d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.5-7 10-7 10z"

@@ -12,15 +12,17 @@ export default function DressCode() {
         <p className="dresscode__text">{wedding.dressCode.text}</p>
       </Animate>
 
-      <AnimateGroup className="dresscode__swatches">
-        {wedding.dressCode.colors.map((color, index) => (
-          <span
-            key={color}
-            className="dresscode__swatch dresscode__swatch--animated"
-            style={{ backgroundColor: color, '--i': index }}
-          />
-        ))}
-      </AnimateGroup>
+      {wedding.dressCode.colors.length > 0 && (
+        <AnimateGroup className="dresscode__swatches">
+          {wedding.dressCode.colors.map((color, index) => (
+            <span
+              key={color}
+              className="dresscode__swatch dresscode__swatch--animated"
+              style={{ backgroundColor: color, '--i': index }}
+            />
+          ))}
+        </AnimateGroup>
+      )}
     </section>
   );
 }

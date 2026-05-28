@@ -1,51 +1,67 @@
 import { wedding } from '../data/content';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { Animate } from './Animate';
-import { HeartIcon } from './Icons';
 
-function TimelineRow({ item, index }) {
-  const { ref, visible } = useScrollReveal(0.2);
+function ProgramItem({ item, index }) {
+  const { ref, visible } = useScrollReveal(0.12);
 
   return (
-    <div
+    <li
       ref={ref}
-      className={`timeline__row ${visible ? 'timeline__row--visible' : ''}`}
-      style={{ '--row-delay': `${index * 180}ms` }}
+      className={`program-item ${visible ? 'program-item--visible' : ''}`}
+      style={{ '--i': index }}
     >
-      <div className="timeline__left">
-        {index > 0 && <span className="timeline__dash" aria-hidden="true" />}
-        <time className="timeline__time timeline__reveal">{item.time}</time>
-        <span className="timeline__event timeline__reveal">{item.title}</span>
+      <span className="program-item__dot" aria-hidden="true" />
+      <time className="program-item__time">{item.time}</time>
+      <div className="program-item__body">
+        <p className="program-item__title">{item.title}</p>
+        <p className="program-item__text">{item.text}</p>
       </div>
+    </li>
+  );
+}
 
-      <div className="timeline__right">
-        <p className="timeline__text timeline__reveal">{item.text}</p>
-      </div>
-    </div>
+function DayBlock({ day, dayIndex }) {
+  const { ref, visible } = useScrollReveal(0.08);
+
+  return (
+    <article
+      ref={ref}
+      className={`program-day ${visible ? 'program-day--visible' : ''}`}
+      style={{ '--day': dayIndex }}
+    >
+      <Animate delay={dayIndex * 120}>
+        <header className="program-day__header">
+          <span className="program-day__line" aria-hidden="true" />
+          <h3 className="program-day__title">{day.dayLabel}</h3>
+          <span className="program-day__line" aria-hidden="true" />
+        </header>
+      </Animate>
+
+      <ul className="program-day__list">
+        {day.events.map((item, index) => (
+          <ProgramItem key={`${day.dayLabel}-${item.time}`} item={item} index={index} />
+        ))}
+      </ul>
+    </article>
   );
 }
 
 export default function Schedule() {
-  const { ref, visible } = useScrollReveal(0.1);
-
   return (
     <section className="schedule section">
       <Animate>
         <h2 className="schedule__heading">
           ПРОГРАММА
           <br />
-          ДНЯ
+          ТОРЖЕСТВА
         </h2>
       </Animate>
 
-      <div ref={ref} className={`timeline ${visible ? 'timeline--visible' : ''}`}>
-        <HeartIcon className="timeline__heart timeline__heart--top timeline__reveal" />
-
-        {wedding.schedule.map((item, index) => (
-          <TimelineRow key={item.time} item={item} index={index} />
+      <div className="program">
+        {wedding.schedule.map((day, index) => (
+          <DayBlock key={day.dayLabel} day={day} dayIndex={index} />
         ))}
-
-        <HeartIcon className="timeline__heart timeline__heart--bottom timeline__reveal" />
       </div>
     </section>
   );
