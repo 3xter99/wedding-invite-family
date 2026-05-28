@@ -38,6 +38,7 @@ export default function RsvpForm() {
         full_name: form.fullName.trim(),
         attendance: form.attendance,
         drinks: form.drinks,
+        source_site: import.meta.env.VITE_SITE_ID || 'unknown',
       });
 
       if (error) throw error;

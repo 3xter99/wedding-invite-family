@@ -10,6 +10,7 @@ type WebhookPayload = {
     full_name?: string;
     attendance?: string;
     drinks?: string[];
+    source_site?: string;
     submitted_at?: string;
   };
 };
@@ -46,6 +47,7 @@ Deno.serve(async (req) => {
     const text = [
       '🎉 Новый ответ на приглашение',
       '',
+      `📍 ${record.source_site ?? 'unknown'}`,
       `👤 ${record.full_name}`,
       `✅ ${record.attendance ?? '—'}`,
       `🥂 ${drinks.length ? drinks.join(', ') : '—'}`,

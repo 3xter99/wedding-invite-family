@@ -5,8 +5,13 @@ create table if not exists rsvp_responses (
   full_name text not null,
   attendance text not null,
   drinks text[] not null default '{}',
+  source_site text not null default 'unknown',
   submitted_at timestamptz not null default now()
 );
+
+-- Если таблица уже была создана без source_site:
+alter table rsvp_responses
+  add column if not exists source_site text not null default 'unknown';
 
 alter table rsvp_responses enable row level security;
 
